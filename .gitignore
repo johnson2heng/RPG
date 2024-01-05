@@ -72,3 +72,14 @@ Plugins/*/Intermediate/*
 
 # Cache files for the editor to use
 DerivedDataCache/*
+
+# Spotlight index files
+.DS_Store
+
+# Visual Studio Code files
+.vscode
+*.code-workspace
+
+# Rider user specific files
+.idea/
+/Plugins/Developer/RiderLink
