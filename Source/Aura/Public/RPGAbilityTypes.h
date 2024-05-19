@@ -19,7 +19,7 @@ public:
 	/** 返回用于序列化的实际结构体 */
 	virtual UScriptStruct* GetScriptStruct() const override
 	{
-		return FGameplayEffectContext::StaticStruct();
+		return FRPGGameplayEffectContext::StaticStruct();
 	}
 
 	/** 用于序列化类的参数 */
