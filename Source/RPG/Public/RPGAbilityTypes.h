@@ -3,6 +3,49 @@
 #include "GameplayEffectTypes.h"
 #include "RPGAbilityTypes.generated.h"
 
+class UGameplayEffect;
+
+USTRUCT(BlueprintType)
+struct FDamageEffectParams
+{
+	GENERATED_BODY()
+
+	FDamageEffectParams(){}
+
+	UPROPERTY()
+	TObjectPtr<UObject> WorldContextObject = nullptr; //当前场景上下文对象
+
+	UPROPERTY()
+	TSubclassOf<UGameplayEffect> DamageGameplayEffectClass = nullptr; //需要应用的GE的类
+
+	UPROPERTY()
+	TObjectPtr<UAbilitySystemComponent> SourceAbilitySystemComponent; //源ASC
+
+	UPROPERTY()
+	TObjectPtr<UAbilitySystemComponent> TargetAbilitySystemComponent; //目标ASC
+
+	UPROPERTY()
+	TMap<FGameplayTag, float> DamageTypes; //技能造成的多种伤害和伤害类型
+
+	UPROPERTY()
+	float AbilityLevel = 1.f; //技能等级
+
+	UPROPERTY()
+	FGameplayTag DeBuffDamageType = FGameplayTag(); //负面效果伤害类型
+
+	UPROPERTY()
+	float DeBuffChance = 0.f; //触发负面效果概率
+
+	UPROPERTY()
+	float DeBuffDamage = 0.f; //负面效果伤害
+
+	UPROPERTY()
+	float DeBuffDuration = 0.f; //负面效果持续时间
+
+	UPROPERTY()
+	float DeBuffFrequency = 0.f; //负面效果触发频率
+};
+
 USTRUCT(BlueprintType) //在蓝图中可作为类型使用
 struct FRPGGameplayEffectContext : public FGameplayEffectContext
 {
