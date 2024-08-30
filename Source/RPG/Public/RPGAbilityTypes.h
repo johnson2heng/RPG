@@ -53,11 +53,21 @@ struct FRPGGameplayEffectContext : public FGameplayEffectContext
 
 public:
 
-	bool IsBlockedHit() const { return bIsBlockedHit; }
-	bool IsCriticalHit() const { return bIsCriticalHit; }
+	bool IsBlockedHit() const { return bIsBlockedHit; } //获取 格挡
+	bool IsCriticalHit() const { return bIsCriticalHit; } //获取 暴击
+	bool IsSuccessfulDeBuff() const { return bIsSuccessfulDeBuff; } //获取 应用负面效果
+	float GetDeBuffDamage() const { return DeBuffDamage; } //获取 负面效果伤害
+	float GetDeBuffDuration() const { return DeBuffDuration; } //获取 负面效果持续时间
+	float GetDeBuffFrequency() const { return DeBuffFrequency; } //获取 负面效果伤害触发间隔
+	TSharedPtr<FGameplayTag> GetDeBuffDamageType() const { return DamageType; } //获取 负面效果伤害类型
 
-	void SetIsBlockedHit(const bool bInIsBlockedHit) { bIsBlockedHit = bInIsBlockedHit; }
-	void SetIsCriticalHit(const bool bInIsCriticalHit) { bIsCriticalHit = bInIsCriticalHit; }
+	void SetIsBlockedHit(const bool bInIsBlockedHit) { bIsBlockedHit = bInIsBlockedHit; } // 设置 格挡
+	void SetIsCriticalHit(const bool bInIsCriticalHit) { bIsCriticalHit = bInIsCriticalHit; } // 设置 暴击
+	void SetIsSuccessfulDeBuff(const bool bInIsSuccessfulDeBuff) { bIsSuccessfulDeBuff = bInIsSuccessfulDeBuff; } //设置 应用负面效果
+	void SetDeBuffDamage(const float InDamage) { DeBuffDamage = InDamage; } //设置 负面效果伤害
+	void SetDeBuffDuration(const float InDuration) { DeBuffDuration = InDuration; } //设置 负面效果伤害
+	void SetDeBuffFrequency(const float InFrequency) { DeBuffFrequency = InFrequency; } //设置 负面效果伤害
+	void SetDeBuffDamageType(const TSharedPtr<FGameplayTag>& InDamageType) { DamageType = InDamageType; } //设置 负面效果伤害类型
 	
 	/** 返回用于序列化的实际结构体 */
 	virtual UScriptStruct* GetScriptStruct() const override
@@ -87,6 +97,20 @@ protected:
 
 	UPROPERTY()
 	bool bIsCriticalHit = false; //暴击
+
+	UPROPERTY()
+	bool bIsSuccessfulDeBuff = false; //成功应用负面效果
+	
+	UPROPERTY()
+	float DeBuffDamage = 0.f; //负面效果每次造成的伤害
+
+	UPROPERTY()
+	float DeBuffDuration = 0.f; //负面效果持续时间
+
+	UPROPERTY()
+	float DeBuffFrequency = 0.f; //负面效果触发频率间隔
+
+	TSharedPtr<FGameplayTag> DamageType; //负面效果的伤害类型
 };
 
 template<>

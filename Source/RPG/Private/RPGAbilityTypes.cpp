@@ -43,10 +43,30 @@ bool FRPGGameplayEffectContext::NetSerialize(FArchive& Ar, UPackageMap* Map, boo
 		{
 			RepBits |= 1 << 8;
 		}
+		if(bIsSuccessfulDeBuff)
+		{
+			RepBits |= 1 << 9;
+		}
+		if(DeBuffDamage > 0.f)
+		{
+			RepBits |= 1 << 10;
+		}
+		if(DeBuffDuration > 0.f)
+		{
+			RepBits |= 1 << 11;
+		}
+		if(DeBuffFrequency > 0.f)
+		{
+			RepBits |= 1 << 12;
+		}
+		if(DamageType.IsValid())
+		{
+			RepBits |= 1 << 13;
+		}
 	}
 
 	//使用了多少长度，就将长度设置为多少
-	Ar.SerializeBits(&RepBits, 9);
+	Ar.SerializeBits(&RepBits, 14);
 
 	if (RepBits & (1 << 0))
 	{
@@ -96,6 +116,33 @@ bool FRPGGameplayEffectContext::NetSerialize(FArchive& Ar, UPackageMap* Map, boo
 	if (RepBits & (1 << 8))
 	{
 		Ar << bIsCriticalHit;
+	}
+	if (RepBits & (1 << 9))
+	{
+		Ar << bIsSuccessfulDeBuff;
+	}
+	if (RepBits & (1 << 10))
+	{
+		Ar << DeBuffDamage;
+	}
+	if (RepBits & (1 << 11))
+	{
+		Ar << DeBuffDuration;
+	}
+	if (RepBits & (1 << 12))
+	{
+		Ar << DeBuffFrequency;
+	}
+	if (RepBits & (1 << 13))
+	{
+		if (Ar.IsLoading()) //判断是否在加载资源
+		{
+			if (!DamageType.IsValid())
+			{
+				DamageType = TSharedPtr<FGameplayTag>(new FGameplayTag());
+			}
+		}
+		DamageType->NetSerialize(Ar, Map, bOutSuccess);
 	}
 
 	if (Ar.IsLoading())
