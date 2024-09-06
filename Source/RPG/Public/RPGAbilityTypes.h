@@ -50,6 +50,15 @@ struct FDamageEffectParams
 
 	UPROPERTY()
 	FVector DeathImpulse = FVector::ZeroVector; //死亡时受到冲击的朝向
+
+	UPROPERTY()
+	float KnockbackForceMagnitude = 0.f; //攻击击退的强度
+
+	UPROPERTY()
+	FVector KnockbackForce = FVector::ZeroVector; //攻击时击退的方向
+
+	UPROPERTY()
+	float KnockbackChance = 0.f; //攻击时击退概率
 };
 
 USTRUCT(BlueprintType) //在蓝图中可作为类型使用
@@ -67,6 +76,7 @@ public:
 	float GetDeBuffFrequency() const { return DeBuffFrequency; } //获取 负面效果伤害触发间隔
 	TSharedPtr<FGameplayTag> GetDeBuffDamageType() const { return DamageType; } //获取 负面效果伤害类型
 	FVector GetDeathImpulse() const { return DeathImpulse; } //获取到死亡冲击的方向和力度
+	FVector GetKnockbackForce() const { return KnockbackForce; } //获取到攻击击退的方向和力度
 
 	void SetIsBlockedHit(const bool bInIsBlockedHit) { bIsBlockedHit = bInIsBlockedHit; } // 设置 格挡
 	void SetIsCriticalHit(const bool bInIsCriticalHit) { bIsCriticalHit = bInIsCriticalHit; } // 设置 暴击
@@ -76,6 +86,7 @@ public:
 	void SetDeBuffFrequency(const float InFrequency) { DeBuffFrequency = InFrequency; } //设置 负面效果伤害
 	void SetDeBuffDamageType(const TSharedPtr<FGameplayTag>& InDamageType) { DamageType = InDamageType; } //设置 负面效果伤害类型
 	void SetDeathImpulse(const FVector& InImpulse) { DeathImpulse = InImpulse; } //设置死亡冲击的方向和力度
+	void SetKnockbackForce(const FVector& InKnockbackForce) { KnockbackForce = InKnockbackForce; } //设置攻击击退的方向和力度
 	
 	/** 返回用于序列化的实际结构体 */
 	virtual UScriptStruct* GetScriptStruct() const override
@@ -122,6 +133,9 @@ protected:
 
 	UPROPERTY()
 	FVector DeathImpulse = FVector::ZeroVector; //死亡时冲击的方向
+
+	UPROPERTY()
+	FVector KnockbackForce = FVector::ZeroVector; //攻击时击退的方向
 };
 
 template<>
