@@ -12,52 +12,52 @@ struct FDamageEffectParams
 
 	FDamageEffectParams(){}
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	TObjectPtr<UObject> WorldContextObject = nullptr; //当前场景上下文对象
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	TSubclassOf<UGameplayEffect> DamageGameplayEffectClass = nullptr; //需要应用的GE的类
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	TObjectPtr<UAbilitySystemComponent> SourceAbilitySystemComponent; //源ASC
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	TObjectPtr<UAbilitySystemComponent> TargetAbilitySystemComponent; //目标ASC
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	TMap<FGameplayTag, float> DamageTypes; //技能造成的多种伤害和伤害类型
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	float AbilityLevel = 1.f; //技能等级
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	FGameplayTag DeBuffDamageType = FGameplayTag(); //负面效果伤害类型
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	float DeBuffChance = 0.f; //触发负面效果概率
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	float DeBuffDamage = 0.f; //负面效果伤害
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	float DeBuffDuration = 0.f; //负面效果持续时间
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	float DeBuffFrequency = 0.f; //负面效果触发频率
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	float DeathImpulseMagnitude = 0.f; //死亡时受到的冲击力
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	FVector DeathImpulse = FVector::ZeroVector; //死亡时受到冲击的朝向
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	float KnockbackForceMagnitude = 0.f; //攻击击退的强度
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	FVector KnockbackForce = FVector::ZeroVector; //攻击时击退的方向
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	float KnockbackChance = 0.f; //攻击时击退概率
 };
 
