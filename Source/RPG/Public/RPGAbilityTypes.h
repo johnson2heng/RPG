@@ -12,53 +12,85 @@ struct FDamageEffectParams
 
 	FDamageEffectParams(){}
 
+	//当前场景上下文对象
 	UPROPERTY(BlueprintReadWrite)
-	TObjectPtr<UObject> WorldContextObject = nullptr; //当前场景上下文对象
+	TObjectPtr<UObject> WorldContextObject = nullptr; 
 
+	//需要应用的GE的类
 	UPROPERTY(BlueprintReadWrite)
-	TSubclassOf<UGameplayEffect> DamageGameplayEffectClass = nullptr; //需要应用的GE的类
+	TSubclassOf<UGameplayEffect> DamageGameplayEffectClass = nullptr; 
 
+	//源ASC
 	UPROPERTY(BlueprintReadWrite)
-	TObjectPtr<UAbilitySystemComponent> SourceAbilitySystemComponent; //源ASC
+	TObjectPtr<UAbilitySystemComponent> SourceAbilitySystemComponent; 
 
+	//目标ASC
 	UPROPERTY(BlueprintReadWrite)
-	TObjectPtr<UAbilitySystemComponent> TargetAbilitySystemComponent; //目标ASC
+	TObjectPtr<UAbilitySystemComponent> TargetAbilitySystemComponent; 
 
+	//技能造成的多种伤害和伤害类型
 	UPROPERTY(BlueprintReadWrite)
-	TMap<FGameplayTag, float> DamageTypes; //技能造成的多种伤害和伤害类型
+	TMap<FGameplayTag, float> DamageTypes; 
 
+	//技能等级
 	UPROPERTY(BlueprintReadWrite)
-	float AbilityLevel = 1.f; //技能等级
+	float AbilityLevel = 1.f; 
 
+	//负面效果伤害类型
 	UPROPERTY(BlueprintReadWrite)
-	FGameplayTag DeBuffDamageType = FGameplayTag(); //负面效果伤害类型
+	FGameplayTag DeBuffDamageType = FGameplayTag(); 
 
+	//触发负面效果概率
 	UPROPERTY(BlueprintReadWrite)
-	float DeBuffChance = 0.f; //触发负面效果概率
+	float DeBuffChance = 0.f; 
 
+	//负面效果伤害
 	UPROPERTY(BlueprintReadWrite)
-	float DeBuffDamage = 0.f; //负面效果伤害
+	float DeBuffDamage = 0.f; 
 
+	//负面效果持续时间
 	UPROPERTY(BlueprintReadWrite)
-	float DeBuffDuration = 0.f; //负面效果持续时间
+	float DeBuffDuration = 0.f; 
 
+	//负面效果触发频率
 	UPROPERTY(BlueprintReadWrite)
-	float DeBuffFrequency = 0.f; //负面效果触发频率
+	float DeBuffFrequency = 0.f; 
 
+	//死亡时受到的冲击力
 	UPROPERTY(BlueprintReadWrite)
-	float DeathImpulseMagnitude = 0.f; //死亡时受到的冲击力
+	float DeathImpulseMagnitude = 0.f; 
 
+	//死亡时受到冲击的朝向
 	UPROPERTY(BlueprintReadWrite)
-	FVector DeathImpulse = FVector::ZeroVector; //死亡时受到冲击的朝向
+	FVector DeathImpulse = FVector::ZeroVector; 
 
+	//攻击击退的强度
 	UPROPERTY(BlueprintReadWrite)
-	float KnockbackForceMagnitude = 0.f; //攻击击退的强度
+	float KnockbackForceMagnitude = 0.f;
 
+	//攻击时击退的方向
 	UPROPERTY(BlueprintReadWrite)
-	FVector KnockbackForce = FVector::ZeroVector; //攻击时击退的方向
+	FVector KnockbackForce = FVector::ZeroVector;
 
+	//攻击时击退概率
 	UPROPERTY(BlueprintReadWrite)
-	float KnockbackChance = 0.f; //攻击时击退概率
+	float KnockbackChance = 0.f;
+
+	//当前伤害类型是否为范围伤害
+	UPROPERTY(BlueprintReadWrite)
+	bool bIsRadialDamage = false;
+
+	//内半径：在此半径内的所有目标都将受到完整的伤害
+	UPROPERTY(BlueprintReadWrite)
+	float RadialDamageInnerRadius = 0.f;
+
+	//外半径：超过这个距离的目标受到最小伤害，最小伤害如果设置为0，则圈外不受到伤害
+	UPROPERTY(BlueprintReadWrite)
+	float RadialDamageOuterRadius = 0.f;
+
+	//伤害源的中心点
+	UPROPERTY(BlueprintReadWrite)
+	FVector RadialDamageOrigin = FVector::ZeroVector;
 };
 
 USTRUCT(BlueprintType) //在蓝图中可作为类型使用
@@ -77,6 +109,10 @@ public:
 	TSharedPtr<FGameplayTag> GetDeBuffDamageType() const { return DamageType; } //获取 负面效果伤害类型
 	FVector GetDeathImpulse() const { return DeathImpulse; } //获取到死亡冲击的方向和力度
 	FVector GetKnockbackForce() const { return KnockbackForce; } //获取到攻击击退的方向和力度
+	bool IsRadialDamage() const { return bIsRadialDamage; } //获取当前是否为范围伤害
+	float GetRadialDamageInnerRadius() const { return RadialDamageInnerRadius; } //返回内半径距离
+	float GetRadialDamageOuterRadius() const { return RadialDamageOuterRadius; } //返回外半径距离
+	FVector GetRadialDamageOrigin() const { return RadialDamageOrigin; } //返回伤害源的中心点
 
 	void SetIsBlockedHit(const bool bInIsBlockedHit) { bIsBlockedHit = bInIsBlockedHit; } // 设置 格挡
 	void SetIsCriticalHit(const bool bInIsCriticalHit) { bIsCriticalHit = bInIsCriticalHit; } // 设置 暴击
@@ -87,6 +123,10 @@ public:
 	void SetDeBuffDamageType(const TSharedPtr<FGameplayTag>& InDamageType) { DamageType = InDamageType; } //设置 负面效果伤害类型
 	void SetDeathImpulse(const FVector& InImpulse) { DeathImpulse = InImpulse; } //设置死亡冲击的方向和力度
 	void SetKnockbackForce(const FVector& InKnockbackForce) { KnockbackForce = InKnockbackForce; } //设置攻击击退的方向和力度
+	void SetIsRadialDamage(bool bInIsRadialDamage) {bIsRadialDamage = bInIsRadialDamage; } //设置当前是否为范围伤害
+	void SetRadialDamageInnerRadius(float InRadialDamageInnerRadius) { RadialDamageInnerRadius = InRadialDamageInnerRadius; } //设置内半径距离
+	void SetRadialDamageOuterRadius(float InRadialDamageOuterRadius) { RadialDamageOuterRadius = InRadialDamageOuterRadius; } //设置外半径距离
+	void SetRadialDamageOrigin(const FVector& InRadialDamageOrigin) { RadialDamageOrigin = InRadialDamageOrigin; } //设置伤害源的中心点
 	
 	/** 返回用于序列化的实际结构体 */
 	virtual UScriptStruct* GetScriptStruct() const override
@@ -111,31 +151,56 @@ public:
 	}
 protected:
 
+	//格挡
 	UPROPERTY()
-	bool bIsBlockedHit = false; //格挡
+	bool bIsBlockedHit = false; 
 
+	//暴击
 	UPROPERTY()
-	bool bIsCriticalHit = false; //暴击
+	bool bIsCriticalHit = false; 
 
+	//成功应用负面效果
 	UPROPERTY()
-	bool bIsSuccessfulDeBuff = false; //成功应用负面效果
+	bool bIsSuccessfulDeBuff = false; 
+
+	//负面效果每次造成的伤害
+	UPROPERTY()
+	float DeBuffDamage = 0.f; 
+
+	//负面效果持续时间
+	UPROPERTY()
+	float DeBuffDuration = 0.f; 
+
+	//负面效果触发频率间隔
+	UPROPERTY()
+	float DeBuffFrequency = 0.f; 
+
+	//负面效果的伤害类型
+	TSharedPtr<FGameplayTag> DamageType; 
+
+	//死亡时冲击的方向
+	UPROPERTY()
+	FVector DeathImpulse = FVector::ZeroVector; 
+
+	//攻击时击退的方向
+	UPROPERTY()
+	FVector KnockbackForce = FVector::ZeroVector;
 	
+	//当前伤害类型是否为范围伤害
 	UPROPERTY()
-	float DeBuffDamage = 0.f; //负面效果每次造成的伤害
+	bool bIsRadialDamage = false;
 
+	//内半径：在此半径内的所有目标都将受到完整的伤害
 	UPROPERTY()
-	float DeBuffDuration = 0.f; //负面效果持续时间
+	float RadialDamageInnerRadius = 0.f;
 
+	//外半径：超过这个距离的目标受到最小伤害，最小伤害如果设置为0，则圈外不受到伤害
 	UPROPERTY()
-	float DeBuffFrequency = 0.f; //负面效果触发频率间隔
+	float RadialDamageOuterRadius = 0.f;
 
-	TSharedPtr<FGameplayTag> DamageType; //负面效果的伤害类型
-
+	//伤害源的中心点
 	UPROPERTY()
-	FVector DeathImpulse = FVector::ZeroVector; //死亡时冲击的方向
-
-	UPROPERTY()
-	FVector KnockbackForce = FVector::ZeroVector; //攻击时击退的方向
+	FVector RadialDamageOrigin = FVector::ZeroVector;
 };
 
 template<>
